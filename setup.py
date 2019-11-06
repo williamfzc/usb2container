@@ -24,11 +24,16 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
     ],
-    install_requires=["fastapi", "uvicorn", "requests", "loguru", "fire", "pydantic==0.32.2"],
+    install_requires=[
+        "fastapi",
+        "uvicorn",
+        "loguru",
+        "fire",
+        "pydantic==0.32.2",
+    ],
     entry_points={
         "console_scripts": [
-            "u2c_client = usb2container.client:main",
-            "u2c_server = usb2container.server:main",
+            "usb2container = usb2container.server:main",
         ]
     },
 )
