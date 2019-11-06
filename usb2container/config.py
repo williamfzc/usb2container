@@ -3,7 +3,7 @@ DEFAULT_PORT: int = 9410
 
 
 class _GlobalConfig(object):
-    pass
+    CHARSET: str = "utf-8"
 
 
 class _ServerConfig(object):
