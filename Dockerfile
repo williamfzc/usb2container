@@ -1,12 +1,10 @@
-FROM python:3-alpine3.7
+FROM python:3.7
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN pip install . \
-    && apk add --no-cache udev \
-    && apk add --no-cache bash
+RUN pip install .
 
 EXPOSE 9410
 
