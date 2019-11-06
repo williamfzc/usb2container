@@ -1,10 +1,13 @@
-FROM python:3.7
+FROM python:3-alpine
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN pip install .
+RUN apk add build-base \
+    && pip install . \
+    && apk add udev \
+    && apk del build-base
 
 EXPOSE 9410
 
