@@ -1,31 +1,50 @@
+from pyudevmonitor.monitor import UDevMonitor
+import queue
+import typing
 import threading
 from loguru import logger
 
-from usb2container.detector import UDevDetector
-from usb2container.event import UEvent, UEventManager
+from pyudevmonitor.event import UEvent
 
 
-U2C_STATUS = False
+class Manager(object):
+    def handle(self, new_event: UEvent):
+        print(new_event.ACTION)
+
+    def loop_handle(self, from_queue: queue.Queue) -> typing.Callable:
+        stop: bool = False
+
+        def loop():
+            while not stop:
+                new = from_queue.get()
+                if not new.is_empty():
+                    self.handle(new)
+            logger.info("loop handle stopped")
+
+        def stop_loop():
+            nonlocal stop
+            stop = True
+
+        threading.Thread(target=loop).start()
+        return stop_loop
 
 
-def start():
-    """ start in a thread, you should call `stop` to stop it by yourself. """
-    global U2C_STATUS
-    U2C_STATUS = True
+class Monitor(object):
+    def __init__(self):
+        self.event_queue: queue.Queue = queue.Queue()
+        # udev event provider
+        self.monitor = UDevMonitor()
+        # consumer
+        self.manager = Manager()
 
-    def inner():
-        UDevDetector.start()
-        while U2C_STATUS:
-            event_content = UDevDetector.read_event()
-            logger.info(",".join(event_content))
-            event_object = UEvent(event_content)
-            UEventManager.add_event(event_object)
-        UDevDetector.stop()
+    def start(self) -> typing.Callable:
+        self.monitor.start()
 
-    threading.Thread(target=inner).start()
+        # return value is a stop function
+        stop_provider = self.monitor.loop_read(to=self.event_queue)
+        stop_consumer = self.manager.loop_handle(from_queue=self.event_queue)
 
-
-def stop():
-    """ stop by changing status flag """
-    global U2C_STATUS
-    U2C_STATUS = False
+        def stop():
+            stop_provider()
+            stop_consumer()
+        return stop

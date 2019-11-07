@@ -5,8 +5,7 @@ import fire
 
 from usb2container import __PROJECT_NAME__, __VERSION__
 from usb2container.config import server_config
-from usb2container import monitor
-from usb2container.event import UEventManager
+from usb2container.monitor import Monitor
 
 
 app = FastAPI()
@@ -14,12 +13,13 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return UEventManager.get_event_dict()
+    return "hello"
 
 
 class Server(object):
     def start(self):
-        monitor.start()
+        m = Monitor()
+        m.start()
         logger.info(f"{__PROJECT_NAME__} ver {__VERSION__}")
         uvicorn.run(app, host="0.0.0.0", port=server_config.PORT)
 
