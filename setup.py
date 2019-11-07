@@ -30,6 +30,7 @@ setup(
         "loguru",
         "fire",
         "pydantic==0.32.2",
+        "pyudevmonitor",
     ],
     entry_points={
         "console_scripts": [
