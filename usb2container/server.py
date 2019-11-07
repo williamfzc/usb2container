@@ -19,9 +19,12 @@ def read_root():
 class Server(object):
     def start(self):
         m = Monitor()
-        m.start()
-        logger.info(f"{__PROJECT_NAME__} ver {__VERSION__}")
-        uvicorn.run(app, host="0.0.0.0", port=server_config.PORT)
+        stop = m.start()
+        try:
+            logger.info(f"{__PROJECT_NAME__} ver {__VERSION__}")
+            uvicorn.run(app, host="0.0.0.0", port=server_config.PORT)
+        finally:
+            stop()
 
 
 def main():
