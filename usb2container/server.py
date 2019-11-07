@@ -12,12 +12,12 @@ from usb2container.monitor import Monitor, DEVICE_DICT
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/api/device")
 def get_all_devices():
     return DEVICE_DICT
 
 
-@app.get("/android")
+@app.get("/api/device/android")
 def get_all_android():
     resp: typing.Dict = dict()
     for path, event in DEVICE_DICT.items():
