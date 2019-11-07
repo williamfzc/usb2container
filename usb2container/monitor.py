@@ -15,7 +15,7 @@ ACTION_UNBIND: str = "unbind"
 DEVICE_DICT: typing.Dict[str, UEvent] = dict()
 
 
-class Manager(object):
+class Consumer(object):
     def handle(self, new_event: UEvent):
         action: str = new_event.ACTION
         dev_path: str = new_event.DEVPATH
@@ -59,16 +59,16 @@ class Monitor(object):
     def __init__(self):
         self.event_queue: queue.Queue = queue.Queue()
         # udev event provider
-        self.monitor = UDevMonitor()
+        self.provider = UDevMonitor()
         # consumer
-        self.manager = Manager()
+        self.consumer = Consumer()
 
     def start(self) -> typing.Callable:
-        self.monitor.start()
+        self.provider.start()
 
         # return value is a stop function
-        stop_provider = self.monitor.loop_read(to=self.event_queue)
-        stop_consumer = self.manager.loop_handle(from_queue=self.event_queue)
+        stop_provider = self.provider.loop_read(to=self.event_queue)
+        stop_consumer = self.consumer.loop_handle(from_queue=self.event_queue)
 
         def stop():
             stop_provider()
