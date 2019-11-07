@@ -30,7 +30,7 @@ setup(
         "loguru",
         "fire",
         "pydantic==0.32.2",
-        "pyudevmonitor",
+        "pyudevmonitor>=0.1.1",
     ],
     entry_points={"console_scripts": ["usb2container = usb2container.server:main",]},
 )
