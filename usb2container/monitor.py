@@ -7,9 +7,35 @@ from loguru import logger
 from pyudevmonitor.event import UEvent
 
 
+ACTION_ADD: str = "add"
+ACTION_BIND: str = "bind"
+ACTION_REMOVE: str = "remove"
+ACTION_UNBIND: str = "unbind"
+
+DEVICE_DICT: typing.Dict[str, UEvent] = dict()
+
+
 class Manager(object):
     def handle(self, new_event: UEvent):
-        print(new_event.ACTION)
+        action: str = new_event.ACTION
+        dev_path: str = new_event.DEVPATH
+
+        # ONLY ADD AND REMOVE
+        if action not in (ACTION_ADD, ACTION_REMOVE):
+            return
+
+        # ADD
+        if action == ACTION_ADD:
+            if dev_path in DEVICE_DICT:
+                logger.warning(f"device {dev_path} already existed. force cover ...")
+            DEVICE_DICT[dev_path] = new_event
+
+        # REMOVE
+        elif action == ACTION_REMOVE:
+            if dev_path not in DEVICE_DICT:
+                logger.warning(f"device {dev_path} not existed")
+            else:
+                del DEVICE_DICT[dev_path]
 
     def loop_handle(self, from_queue: queue.Queue) -> typing.Callable:
         stop: bool = False

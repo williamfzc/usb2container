@@ -32,9 +32,5 @@ setup(
         "pydantic==0.32.2",
         "pyudevmonitor",
     ],
-    entry_points={
-        "console_scripts": [
-            "usb2container = usb2container.server:main",
-        ]
-    },
+    entry_points={"console_scripts": ["usb2container = usb2container.server:main",]},
 )

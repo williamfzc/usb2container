@@ -2,18 +2,28 @@ from fastapi import FastAPI
 from loguru import logger
 import uvicorn
 import fire
+import typing
 
 from usb2container import __PROJECT_NAME__, __VERSION__
 from usb2container.config import server_config
-from usb2container.monitor import Monitor
+from usb2container.monitor import Monitor, DEVICE_DICT
 
 
 app = FastAPI()
 
 
 @app.get("/")
-def read_root():
-    return "hello"
+def get_all_devices():
+    return DEVICE_DICT
+
+
+@app.get("/android")
+def get_all_android():
+    resp: typing.Dict = dict()
+    for path, event in DEVICE_DICT.items():
+        if (event.adb_user == "yes") or (event.ID_SERIAL_SHORT != ""):
+            resp[path] = event
+    return resp
 
 
 class Server(object):
