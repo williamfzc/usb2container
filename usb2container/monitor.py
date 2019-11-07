@@ -47,4 +47,7 @@ class Monitor(object):
         def stop():
             stop_provider()
             stop_consumer()
+            # empty event for stopping
+            self.event_queue.put(UEvent([]))
+
         return stop
