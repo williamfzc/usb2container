@@ -11,4 +11,4 @@ RUN apk add build-base \
 
 EXPOSE 9410
 
-CMD [ "u2c_server", "start" ]
+CMD [ "usb2container", "start" ]
