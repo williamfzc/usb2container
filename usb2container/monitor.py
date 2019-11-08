@@ -65,10 +65,13 @@ class Monitor(object):
 
     def start(self) -> typing.Callable:
         self.provider.start()
+        logger.debug("provider process already setup")
 
         # return value is a stop function
         stop_provider = self.provider.loop_read(to=self.event_queue)
+        logger.debug("start getting events from provider")
         stop_consumer = self.consumer.loop_handle(from_queue=self.event_queue)
+        logger.debug("consumer start handling events")
 
         def stop():
             stop_provider()
