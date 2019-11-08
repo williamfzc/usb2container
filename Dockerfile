@@ -1,13 +1,16 @@
-FROM python:3-alpine
+FROM python:3-slim
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN apk add build-base \
+RUN apt-get update \
+    && apt-get install -y build-essential \
+    && apt-get install -y udev \ 
     && pip install . \
-    && apk add udev \
-    && apk del build-base
+    && apt-get purge -y --auto-remove build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 9410
 
