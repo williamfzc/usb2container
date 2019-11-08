@@ -18,6 +18,12 @@ Another way is binding devices by devpath. It may looks like:
 docker run -t -i --privileged -v /dev/bus/usb/001/002:/dev/bus/usb/001/002 ubuntu bash
 ```
 
+or `--device` (better, no `privileged`):
+
+```bash
+docker run -t -i --device /dev/bus/usb/001/002 ubuntu bash
+```
+
 Much safer. But actually it is hard to know what the devpath of a specific device is.
 
 **This repo aims at offering a easy way for developers to get devpath of devices.**
@@ -127,7 +133,11 @@ you can access all the connected devices' info:
 }
 ```
 
-and bind them to your containers.
+and bind them to your containers. For example, you can see the DEVNAME of this device is `/dev/bus/usb/001/120`:
+
+```bash
+docker run -t -i --device /dev/bus/usb/001/120 ubuntu bash
+```
 
 ## dependencies
 
