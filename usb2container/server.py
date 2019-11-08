@@ -35,12 +35,15 @@ def get_single_android_by_serial_no(serial_no: str):
 
 
 class Server(object):
-    def start(self):
+    def start(self, port: int = None):
+        if not port:
+            port = server_config.PORT
+
         m = Monitor()
         stop = m.start()
         try:
             logger.info(f"{__PROJECT_NAME__} ver {__VERSION__}")
-            uvicorn.run(app, host="0.0.0.0", port=server_config.PORT)
+            uvicorn.run(app, host="0.0.0.0", port=port)
         finally:
             stop()
 
