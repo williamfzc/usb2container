@@ -26,6 +26,14 @@ def get_all_android():
     return resp
 
 
+@app.get("/api/device/android/{serial_no}")
+def get_single_android_by_serial_no(serial_no: str):
+    for _, event in DEVICE_DICT.items():
+        if event.ID_SERIAL_SHORT == serial_no:
+            return event
+    return {}
+
+
 class Server(object):
     def start(self):
         m = Monitor()
