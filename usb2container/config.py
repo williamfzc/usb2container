@@ -4,6 +4,7 @@ DEFAULT_PORT: int = 9410
 
 class _GlobalConfig(object):
     CHARSET: str = "utf-8"
+    WITH_DOCKER: bool = False
 
 
 class _ServerConfig(object):

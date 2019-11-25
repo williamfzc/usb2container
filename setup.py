@@ -31,6 +31,7 @@ setup(
         "fire",
         "pydantic==0.32.2",
         "pyudevmonitor>=0.1.1",
+        "docker",
     ],
-    entry_points={"console_scripts": ["usb2container = usb2container.server:main",]},
+    entry_points={"console_scripts": ["usb2container = usb2container.server:main"]},
 )
