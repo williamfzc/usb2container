@@ -29,7 +29,7 @@ setup(
         "uvicorn",
         "loguru",
         "fire",
-        "pydantic==0.32.2",
+        "pydantic==1.6.2",
         "pyudevmonitor>=0.1.1",
         "docker",
     ],
