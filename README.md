@@ -1,3 +1,5 @@
+> 2022/1/28: This project should only be used in a single node. In K8S, you 'd better consider persistent-volumes first.
+
 # usb2container
 
 offer a way binding specific USB devices to container
